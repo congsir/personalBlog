@@ -7,60 +7,31 @@
         mode="horizontal"
         @select="handleSelect"
       >
-        <el-menu-item index="1">个人博客日记</el-menu-item>
-        <el-menu-item index="2">html/css</el-menu-item>
-        <el-menu-item index="3">网站设计</el-menu-item>
-        <el-menu-item index="4"><a href="#">设计心得</a></el-menu-item>
+        <el-menu-item v-for="(item,index) in typesData" :key="item.id" :index="String(index+1)">{{item.type}}</el-menu-item>
       </el-menu>
       <div class="line"></div>
     </div>
     <div class="content">
       <div class="left">
-        <a href="http://jxhx2.yangqq.com/notice/27.html">
-          <picture-with-title
-            bgUrl="http://jxhx2.yangqq.com/skin/jxhx/images/h1.jpg"
-            title="为什么说10月24日是程序猿的节日？"
-          ></picture-with-title>
-        </a>
-        <a href="http://jxhx2.yangqq.com/notice/27.html">
-          <picture-with-title
-            bgUrl="http://jxhx2.yangqq.com/skin/jxhx/images/h2.jpg"
-            title="个人网站做好了，百度不收录怎么办？来，看看他们是怎么做的"
-          ></picture-with-title>
-        </a>
+        <div v-for="item in top2Data" :key="item.id">
+          <router-link :to='"/article/"+item.id'>
+              <picture-with-title
+                :bgUrl="item.cover"
+                :title="item.title"
+              ></picture-with-title>
+          </router-link>
+        </div>
       </div>
       <div class="right">
         <div @mouseleave="toLiActive(1)" class="list">
           <ul>
-            <li @mouseenter="toLiActive(1)" :class="{ active: liActive == 1 }">
-              <h3 index="1">安静的做一个爱设计的女子</h3>
-              <p class="intro">
-                自从入了这行，很多人跟我说可以做网络教程，我也有考虑，但最终没有实现，因为我觉得在这个教程泛滥的时代，直接做一套免费的原创个人博客模板更为实在。每当因为我觉得在这个教程泛滥的时代
-              </p>
-            </li>
-            <li @mouseenter="toLiActive(2)" :class="{ active: liActive == 2 }">
-              <h3 index="2">安静的做一个爱设计的女子</h3>
-              <p class="intro">
-                自从入了这行，很多人跟我说可以做网络教程，我也有考虑，但最终没有实现，因为我觉得在这个教程泛滥的时代，直接做一套免费的原创个人博客模板更为实在。每当因为我觉得在这个教程泛滥的时代
-              </p>
-            </li>
-            <li @mouseenter="toLiActive(3)" :class="{ active: liActive == 3 }">
-              <h3 index="3">安静的做一个爱设计的女子</h3>
-              <p class="intro">
-                自从入了这行，很多人跟我说可以做网络教程，我也有考虑，但最终没有实现，因为我觉得在这个教程泛滥的时代，直接做一套免费的原创个人博客模板更为实在。每当因为我觉得在这个教程泛滥的时代
-              </p>
-            </li>
-            <li @mouseenter="toLiActive(4)" :class="{ active: liActive == 4 }">
-              <h3 index="4">安静的做一个爱设计的女子</h3>
-              <p class="intro">
-                自从入了这行，很多人跟我说可以做网络教程，我也有考虑，但最终没有实现，因为我觉得在这个教程泛滥的时代，直接做一套免费的原创个人博客模板更为实在。每当因为我觉得在这个教程泛滥的时代
-              </p>
-            </li>
-            <li @mouseenter="toLiActive(5)" :class="{ active: liActive == 5 }">
-              <h3 index="5">安静的做一个爱设计的女子</h3>
-              <p class="intro">
-                自从入了这行，很多人跟我说可以做网络教程，我也有考虑，但最终没有实现，因为我觉得在这个教程泛滥的时代，直接做一套免费的原创个人博客模板更为实在。每当因为我觉得在这个教程泛滥的时代
-              </p>
+            <li v-for="(item,index) in typesArticleData" :key="item.id" @mouseenter='toLiActive(index+1)' :class='{ active: liActive == index+1 }'>
+              <router-link :to='"/article/"+item.id'>
+                <h3 :index="index+1">{{item.title}}</h3>
+                <p class="intro">
+                  {{item.abstract}}
+                </p>
+              </router-link>
             </li>
           </ul>
         </div>
@@ -73,19 +44,60 @@ import pictureWithTitle from "../common/pictureWithTitle.vue";
 export default {
   data() {
     return {
-      activeIndex: "1",
-      liActive: 1
+      activeIndex: '1',
+      liActive: 1,
+      typesData: [],    //  类型列表
+      typesArticleData: [],  //该类型下2个后的数据
+      top2Data: []  //该类型下的前两个数据
     };
   },
   components: {
     pictureWithTitle
   },
+  created () {
+    this.getTypeData();
+  },
   methods: {
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+    handleSelect(key) {
+      
+      if(key == this.activeIndex){
+        return;
+      }else{
+        let type = this.typesData[Number(key)-1].type;
+        this.getTypeArticle(type);
+        this.activeIndex = key;
+      }
     },
     toLiActive(index) {
       this.liActive = index;
+    },
+    getTypeData(){
+      this.$http({
+        'url' : this.$http.adornUrl('/api/types'),
+        'method' : 'get',
+        'params' : this.$http.adornParams()
+      }).then(({data})=>{
+        if(data.statusCode == '200' && data.status == "success"){
+          this.typesData = data.data;
+          this.getTypeArticle(data.data[0].type);
+        }
+      })
+    },
+    getTypeArticle(type){
+      if(type){
+        this.$http({
+          'url' : this.$http.adornUrl('/api/typeArticle'),
+          'method' : 'get',
+          'params' : this.$http.adornParams({
+            type : type
+          })
+        }).then(({data})=>{
+          if(data.statusCode == '200' && data.status == "success"){
+            this.typesArticleData = data.data.slice(2);
+            this.top2Data = data.data.slice(0,2);
+          }
+        })
+      }
     }
   }
 };
@@ -126,6 +138,10 @@ export default {
         li {
           margin-bottom: 10px;
           padding: 0 10px;
+          a{
+            color: #333;
+            cursor: pointer;
+          }
           p {
             line-height: 24px;
             font-size: 14px;

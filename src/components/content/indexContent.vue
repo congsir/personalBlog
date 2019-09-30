@@ -4,18 +4,19 @@
       <el-row :gutter="20">
         <el-col :span="12">
             <el-carousel trigger="click" height="260px">
-            <el-carousel-item v-for="item in imgList" :key="item">
-                <img :src="item" alt="">
+            <el-carousel-item v-for="item in bannerData" :key="item.id">
+                <router-link :to='"/article/"+item.id'>
+                  <img :src="item.cover" :alt="item.title">
+                </router-link>
             </el-carousel-item>
             </el-carousel>
         </el-col>
         <el-col :span="6">
-            <a href="http://jxhx2.yangqq.com/notice/27.html">
-            <picture-with-title bgUrl="http://jxhx2.yangqq.com/skin/jxhx/images/h1.jpg" title="为什么说10月24日是程序猿的节日？"></picture-with-title>
-            </a>
-            <a href="http://jxhx2.yangqq.com/notice/27.html">
-            <picture-with-title bgUrl="http://jxhx2.yangqq.com/skin/jxhx/images/h2.jpg" title="个人网站做好了，百度不收录怎么办？来，看看他们是怎么做的"></picture-with-title>
-            </a>
+            <div v-for="item in topArticleData" :key="item.id" >
+              <router-link :to='"/article/"+item.id'>
+                <picture-with-title :bgUrl="item.cover" :title="item.title"></picture-with-title>
+              </router-link>
+            </div>
         </el-col>
         <el-col :span="6">
             <card></card>
@@ -54,11 +55,8 @@ import guessYourLove from "../common/guessYourLove.vue";
 export default {
     data(){
         return {
-            imgList:[
-                'http://jxhx2.yangqq.com/skin/jxhx/images/1.jpg',
-                'http://jxhx2.yangqq.com/skin/jxhx/images/2.jpg',
-                'http://jxhx2.yangqq.com/skin/jxhx/images/3.jpg',
-                'http://jxhx2.yangqq.com/skin/jxhx/images/4.jpg']
+            bannerData:[],
+            topArticleData: []
         }
     },
     components:{
@@ -72,6 +70,38 @@ export default {
         adCard,
         latestArticleList,
         guessYourLove
+    },
+    created(){
+      this.getBannerArticle();
+      this.getTopArticle();
+    },
+    methods:{
+      getBannerArticle(){
+        this.$http({
+          url : this.$http.adornUrl('/api/bannerArticle'),
+          method: "GET",
+          params: this.$http.adornParams({
+
+          })
+        }).then(({data})=>{
+          if(data.status == 'success'&&data.statusCode=='200'){
+            this.bannerData = data.data;
+          }
+        })
+      },
+      getTopArticle(){
+        this.$http({
+          url : this.$http.adornUrl('/api/topArticle'),
+          method: "GET",
+          params: this.$http.adornParams({
+
+          })
+        }).then(({data})=>{
+          if(data.status == 'success'&&data.statusCode=='200'){
+            this.topArticleData = data.data;
+          }
+        })
+      }
     }
 }
 </script>
@@ -97,6 +127,14 @@ export default {
 }
 .el-col {
   border-radius: 4px;
+}
+.el-carousel{
+  overflow: hidden;
+  a{
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
 }
 .el-carousel__item img{
     width: 100%;

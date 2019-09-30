@@ -12,28 +12,22 @@
           <el-col :span="15">
             <el-row class="hd-content" :gutter="0">
               <router-link to="/">
-                <el-col :span="3">网站首页</el-col>
+                <el-col :span="4">网站首页</el-col>
               </router-link>
-              <router-link to="/blog">
-                <el-col :span="4">个人博客日记</el-col>
-              </router-link>
-              <router-link to="/siteDesign">
-                <el-col :span="3">网站设计</el-col>
-              </router-link>
-              <router-link to="/design">
-                <el-col :span="3">设计心得</el-col>
+              <router-link to="/typeArticleList?type=blog">
+                <el-col :span="6">个人博客日记</el-col>
               </router-link>
               <router-link to="/aboutMe">
-                <el-col :span="3">关于我</el-col>
+                <el-col :span="4">关于我</el-col>
               </router-link>
               <router-link to="/timeLine">
-                <el-col :span="3">时间轴</el-col>
+                <el-col :span="4">时间轴</el-col>
               </router-link>
-              <router-link to="/blogRoute">
+              <!-- <router-link to="/blogRoute">
                 <el-col :span="3">博客导航</el-col>
-              </router-link>
+              </router-link> -->
               <router-link to="/leaveMessage">
-                <el-col :span="2">留言</el-col>
+                <el-col :span="4">留言</el-col>
               </router-link>
             </el-row>
           </el-col>

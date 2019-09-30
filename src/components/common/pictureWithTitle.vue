@@ -28,13 +28,11 @@ export default {
   overflow: hidden;
   &:hover img{
         width: 110%;
-        height: 110%;
         opacity: 1;
   }
   img {
     position: absolute;
     width: 100%;
-    height: 100%;
     z-index: 0;
     left: 0;
     transition: all .5s ease;

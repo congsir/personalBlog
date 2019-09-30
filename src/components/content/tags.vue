@@ -3,8 +3,7 @@
     <div class="content">
       <el-row :gutter="20">
         <el-col :span="18">
-            <subTitle-card class="leftCard"></subTitle-card>
-            <latest-article-list class="leftCard"></latest-article-list>
+            <latest-article-list :tags="tags" class="leftCard"></latest-article-list>
         </el-col>
         <el-col :span="6">
             <click-sort class="rightCard"></click-sort>
@@ -24,11 +23,11 @@ import webmasterIntro from "../common/webmasterIntro.vue";
 import adCard from "../common/adCard.vue";
 import latestArticleList from "../common/latestArticleList.vue";
 import guessYourLove from "../common/guessYourLove.vue";
-import subTitleCard from "../common/subTitleCard.vue";
 import tagCloudCard from "../common/tagCloudCard.vue";
 export default {
     data(){
         return {
+            tags:""
         }
     },
     created () {
@@ -36,9 +35,10 @@ export default {
     },
     methods: {
       init(){
-        console.log(this.$route.query);
-        if(!this.$route.query.type){
+        if(!this.$route.query.tag){
           this.$router.push('/404')
+        }else{
+            this.tags = this.$route.query.tag
         }
       }
     },
@@ -48,7 +48,6 @@ export default {
         adCard,
         latestArticleList,
         guessYourLove,
-        subTitleCard,
         tagCloudCard
     }
 }

@@ -4,91 +4,22 @@
       <div class="subTitle">
         特别推荐
         <div class="navgate">
-          <li>帝国cms</li>
-          <li>个人博客</li>
-          <li>网站制作</li>
-          <li>设计</li>
+          <li v-for="item in typesData" :key="item.id">{{item.type}}</li>
         </div>
       </div>
       <div class="list">
           <ul>
-               <li>
+               <li v-for="item in articleData" :key="item.id">
                     <i class="ztpic">
-                        <a href="/notice/30.html" target="_blank">
-                        <img src="http://www.yangqq.com/d/file/jstt/web/2018-10-16/56c49531df63eec5ccc3840e68f3ac21.png"/>
-                        </a>
+                      <router-link :to='"/article/"+item.id'>
+                        <img :src="item.cover"/>
+                      </router-link>
                     </i>
-                    <b>【个人博客空间申请】金牛云服，免费领空间啦</b>
+                    <b>{{item.title}}</b>
                     <span>
-                        还在愁域名购买了，如何选择主机或者服务器吗？
-                        其实选择主机或者服务器有几个重要的选项，比如，线路，CPU，内存，带宽，网页空间，数据库，月流量等等。那什么是主机，什么是服务器，他们的区别
-                        </span>
-                    <a href="/notice/30.html" target="_blank" class="readmore">文章阅读</a>
-                </li>
-                <li>
-                    <i class="ztpic">
-                        <a href="/notice/30.html" target="_blank">
-                        <img src="http://www.yangqq.com/d/file/jstt/web/2018-10-16/56c49531df63eec5ccc3840e68f3ac21.png"/>
-                        </a>
-                    </i>
-                    <b>【个人博客空间申请】金牛云服，免费领空间啦</b>
-                    <span>
-                        还在愁域名购买了，如何选择主机或者服务器吗？
-                        其实选择主机或者服务器有几个重要的选项，比如，线路，CPU，内存，带宽，网页空间，数据库，月流量等等。那什么是主机，什么是服务器，他们的区别
-                        </span>
-                    <a href="/notice/30.html" target="_blank" class="readmore">文章阅读</a>
-                </li>
-                <li>
-                    <i class="ztpic">
-                        <a href="/notice/30.html" target="_blank">
-                        <img src="http://www.yangqq.com/d/file/jstt/web/2018-10-16/56c49531df63eec5ccc3840e68f3ac21.png"/>
-                        </a>
-                    </i>
-                    <b>【个人博客空间申请】金牛云服，免费领空间啦</b>
-                    <span>
-                        还在愁域名购买了，如何选择主机或者服务器吗？
-                        其实选择主机或者服务器有几个重要的选项，比如，线路，CPU，内存，带宽，网页空间，数据库，月流量等等。那什么是主机，什么是服务器，他们的区别
-                        </span>
-                    <a href="/notice/30.html" target="_blank" class="readmore">文章阅读</a>
-                </li>
-                <li>
-                    <i class="ztpic">
-                        <a href="/notice/30.html" target="_blank">
-                        <img src="http://www.yangqq.com/d/file/jstt/web/2018-10-16/56c49531df63eec5ccc3840e68f3ac21.png"/>
-                        </a>
-                    </i>
-                    <b>【个人博客空间申请】金牛云服，免费领空间啦</b>
-                    <span>
-                        还在愁域名购买了，如何选择主机或者服务器吗？
-                        其实选择主机或者服务器有几个重要的选项，比如，线路，CPU，内存，带宽，网页空间，数据库，月流量等等。那什么是主机，什么是服务器，他们的区别
-                        </span>
-                    <a href="/notice/30.html" target="_blank" class="readmore">文章阅读</a>
-                </li>
-                <li>
-                    <i class="ztpic">
-                        <a href="/notice/30.html" target="_blank">
-                        <img src="http://www.yangqq.com/d/file/jstt/web/2018-10-16/56c49531df63eec5ccc3840e68f3ac21.png"/>
-                        </a>
-                    </i>
-                    <b>【个人博客空间申请】金牛云服，免费领空间啦</b>
-                    <span>
-                        还在愁域名购买了，如何选择主机或者服务器吗？
-                        其实选择主机或者服务器有几个重要的选项，比如，线路，CPU，内存，带宽，网页空间，数据库，月流量等等。那什么是主机，什么是服务器，他们的区别
-                        </span>
-                    <a href="/notice/30.html" target="_blank" class="readmore">文章阅读</a>
-                </li>
-                <li>
-                    <i class="ztpic">
-                        <a href="/notice/30.html" target="_blank">
-                        <img src="http://www.yangqq.com/d/file/jstt/web/2018-10-16/56c49531df63eec5ccc3840e68f3ac21.png"/>
-                        </a>
-                    </i>
-                    <b>【个人博客空间申请】金牛云服，免费领空间啦</b>
-                    <span>
-                        还在愁域名购买了，如何选择主机或者服务器吗？
-                        其实选择主机或者服务器有几个重要的选项，比如，线路，CPU，内存，带宽，网页空间，数据库，月流量等等。那什么是主机，什么是服务器，他们的区别
-                        </span>
-                    <a href="/notice/30.html" target="_blank" class="readmore">文章阅读</a>
+                        {{item.abstract}}
+                    </span>
+                    <router-link :to='"/article/"+item.id' class="readmore">文章阅读</router-link>
                 </li>
           </ul>
       </div>
@@ -98,9 +29,40 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      articleData:[] , //文章数据
+      typesData:[]     //文章类型
+    };
   },
-  components: {}
+  components: {},
+  created() {
+    this.getData();
+    this.getTypeData();
+  },
+  methods:{
+    getData(){
+      this.$http({
+        'url' : this.$http.adornUrl('/api/specialArticle'),
+        'method' : 'GET',
+        'params' : this.$http.adornParams()
+      }).then(({data})=>{
+        if(data.status == 'success'&& data.statusCode=='200'){
+          this.articleData = data.data.slice(0,6);
+        }
+      })
+    },
+    getTypeData(){
+      this.$http({
+        'url' : this.$http.adornUrl('/api/types'),
+        'method' : 'get',
+        'params' : this.$http.adornParams()
+      }).then(({data})=>{
+        if(data.statusCode == '200' && data.status == "success"){
+          this.typesData = data.data;
+        }
+      })
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

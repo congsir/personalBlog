@@ -3,65 +3,89 @@ import Router from 'vue-router'
 import Index from '../views/Index.vue'
 import indexContent from "../components/content/indexContent.vue"
 import blog from "../components/content/blog.vue"
-import siteDesign from "../components/content/siteDesign.vue"
-import design from "../components/content/design.vue"
-import aboutMe from "../components/content/aboutMe.vue"
+import tags from "../components/content/tags.vue"
+import aboutMe from "../views/aboutMe.vue"
 import timeLine from "../components/content/timeLine.vue"
-import blogRoute from "../components/content/blogRoute.vue"
 import leaveMessage from "../components/content/leaveMessage.vue"
+import article from "../components/content/article.vue"
+import is_404 from "../views/404.vue"
 
 Vue.use(Router)
 
-export default new Router({
+let router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
+      path:'/aboutMe',
+      component:aboutMe,
+      meta:{
+        title: "关于我"
+      }
+    },
+    {
       path: '/',
       name: 'index',
       component:Index,
+      meta:{
+        title: "博客"
+      },
       children:[
         {
           path:'',
-          component:indexContent
+          component:indexContent,
+          meta:{
+            title: "博客"
+          },
         },
         {
-          path:'/blog',
+          path:'/tagsArticleList',
+          component:tags
+        },
+        {
+          path:'/typeArticleList',
           component:blog
         },
         {
-          path:'/siteDesign',
-          component:siteDesign
-        },
-        {
-          path:'/design',
-          component:design
-        },
-        {
-          path:'/aboutMe',
-          component:aboutMe
-        },
-        {
           path:'/timeLine',
-          component:timeLine
-        },
-        {
-          path:'/blogRoute',
-          component:blogRoute
+          component:timeLine,
+          meta:{
+            title:"时间轴"
+          }
         },
         {
           path:'/leaveMessage',
-          component:leaveMessage
+          component:leaveMessage,
+          meta:{
+            title:"留言"
+          }
         },
+        {
+          path:'/article/:id',
+          component:article,
+          meta:{
+            title:"文章"
+          }
+        },
+        
       ]
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-    }
+      path:'*',
+      component:is_404,
+      meta:{
+        title:"404"
+      }
+    },
+    
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if(to.meta.title){
+    document.title = to.meta.title;
+  }
+  next();
+})
+
+export default router;

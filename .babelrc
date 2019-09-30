@@ -1,0 +1,23 @@
+{ "presets": [["@babel/env", {
+    "modules": false,
+    "targets": {"browsers": ["> 1%", "last 2 versions", "not ie <= 8"]}
+   }]
+//    "@babel/stage-2"
+],
+ "plugins": [
+    // "transform-runtime",
+    ["component",
+        {
+            "libraryName":"element-ui",
+            "styleLibraryName":"theme-chalk" //1.4的老项目用这个，2.0的用theme-chalk，假设没效果看看官网又把默认的主题改 成那个了 跟着改一下应该就可以了
+        }
+    ]
+ ],
+ "comments":false
+//  "env": {
+//     "test": {
+//     "presets": ["env", "stage-2"],
+//     "plugins": ["istanbul"]
+//     }
+//  }
+}

@@ -4,35 +4,19 @@
       <div class="subTitle">
         点击排行
       </div>
-      <a class="picWrapper" href="http://jxhx2.yangqq.com/notice/27.html">
+      <router-link class="picWrapper" :to='"/article/"+topClickData.id'>
         <picture-with-title
-          bgUrl="http://jxhx2.yangqq.com/skin/jxhx/images/b02.jpg"
-          title="个人网站做好了，百度不收录怎么办？来，看看他们是怎么做的"
+          :bgUrl="topClickData.cover"
+          :title="topClickData.title"
         ></picture-with-title>
-      </a>
+      </router-link>
 
       <div class="list">
         <ul>
-          <li>
-            <h3 index="1">安静的做一个爱设计的女子这里纵膈哟交流</h3>
-          </li>
-          <li>
-            <h3 index="2">安静的做一个爱设计的女子sadfasasdf</h3>
-          </li>
-          <li>
-            <h3 index="3">安静的做一个爱设计的女子</h3>
-          </li>
-          <li>
-            <h3 index="4">安静的做一个爱设计的女子</h3>
-          </li>
-          <li>
-            <h3 index="5">安静的做一个爱设计的女子</h3>
-          </li>
-          <li>
-            <h3 index="6">安静的做一个爱设计的女子</h3>
-          </li>
-          <li>
-            <h3 index="7">安静的做一个爱设计的女子</h3>
+          <li v-for="(item,index) in articleData" :key="item.id">
+            <h3 :index="index+1">
+              <router-link :to='"/article/"+item.id'>{{item.title}}</router-link>
+            </h3>  
           </li>
         </ul>
       </div>
@@ -42,8 +26,28 @@
 <script>
 import pictureWithTitle from "./pictureWithTitle.vue";
 export default {
-  data() {
-    return {};
+  data(){
+    return{
+      articleData:[],
+      topClickData : {}
+    }
+  },
+  created(){
+    this.getData();
+  },
+  methods:{
+    getData(){
+      this.$http({
+        'url' : this.$http.adornUrl('/api/clickMostArticle'),
+        'method' : 'GET',
+        'params' : this.$http.adornParams()
+      }).then(({data})=>{
+        if(data.status == 'success'&& data.statusCode=='200'){
+          this.articleData = data.data.slice(1);
+          this.topClickData = data.data[0];
+        }
+      })
+    }
   },
   components: {
     pictureWithTitle
@@ -56,6 +60,10 @@ export default {
   padding: 20px 10px;
   background-color: #fff;
   text-align: left;
+  a{
+    text-decoration: none;
+    color: #222;
+  }
   .card {
     .subTitle {
       font-size: 16px;

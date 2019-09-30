@@ -6,15 +6,39 @@
       </div>
       <div class="list">
         <ul>
-          <li><a href="#">[个人博客空间申请]金牛云服，这里就有；甲山路的福利</a></li>
-          <li><a href="#">[个人博客空间申请]金牛云服，这里就有；甲山路的福利</a></li>
-          <li><a href="#">[个人博客空间申请]金牛云服，这里就有；甲山路的福利</a></li>
-          <li><a href="#">[个人博客空间申请]金牛云服，这里就有；甲山路的福利</a></li>
+          <li v-for="item in articleData" :key="item.id">
+            <router-link :to='"/article/"+item.id'>{{item.title}}</router-link>
+          </li>
         </ul>
       </div>
     </div>
   </div>
 </template>
+<script>
+export default {
+  data(){
+    return{
+      articleData:[]
+    }
+  },
+  created(){
+    this.getData();
+  },
+  methods:{
+    getData(){
+      this.$http({
+        'url' : this.$http.adornUrl('/api/latestArticle'),
+        'method' : 'GET',
+        'params' : this.$http.adornParams()
+      }).then(({data})=>{
+        if(data.status == 'success'&& data.statusCode=='200'){
+          this.articleData = data.data.slice(0,4);
+        }
+      })
+    }
+  }
+}
+</script>
 <style lang="scss" scoped>
 .wrapper {
   box-sizing: border-box;

@@ -4,56 +4,22 @@
       <div class="subTitle">
         站长推荐
       </div>
-      <a class="picWrapper" href="http://jxhx2.yangqq.com/notice/27.html">
-        <picture-with-title
-          bgUrl="http://jxhx2.yangqq.com/skin/jxhx/images/b02.jpg"
-          title="个人网站做好了，百度不收录怎么办？来，看看他们是怎么做的"
+      <router-link class="picWrapper" :to='"/article/"+specialIntroData.id'>
+          <picture-with-title
+          :bgUrl="specialIntroData.cover"
+          :title="specialIntroData.title"
         ></picture-with-title>
-      </a>
+      </router-link>
 
       <div class="list">
         <ul>
-          <li>
-            <div class="left">
-              <img src="http://www.yangqq.com/d/file/jstt/css3/2018-03-20/718b56be9dbf920cc0a6124545216654.jpg" alt="">
-            </div>
-            <div class="right">十条设计原则教会你如何进行网页布局,人家进行两行打点测试</div>
-          </li>
-          <li>
-            <div class="left">
-              <img src="http://www.yangqq.com/d/file/jstt/css3/2018-03-20/718b56be9dbf920cc0a6124545216654.jpg" alt="">
-            </div>
-            <div class="right">十条设计原则教会你如何进行网页布局,人家进行两行打点测试</div>
-          </li>
-          <li>
-            <div class="left">
-              <img src="http://www.yangqq.com/d/file/jstt/css3/2018-03-20/718b56be9dbf920cc0a6124545216654.jpg" alt="">
-            </div>
-            <div class="right">十条设计原则教会你如何进行网页布局,人家进行两行打点测试</div>
-          </li>
-          <li>
-            <div class="left">
-              <img src="http://www.yangqq.com/d/file/jstt/css3/2018-03-20/718b56be9dbf920cc0a6124545216654.jpg" alt="">
-            </div>
-            <div class="right">十条设计原则教会你如何进行网页布局,人家进行两行打点测试</div>
-          </li>
-          <li>
-            <div class="left">
-              <img src="http://www.yangqq.com/d/file/jstt/css3/2018-03-20/718b56be9dbf920cc0a6124545216654.jpg" alt="">
-            </div>
-            <div class="right">十条设计原则教会你如何进行网页布局,人家进行两行打点测试</div>
-          </li>
-          <li>
-            <div class="left">
-              <img src="http://www.yangqq.com/d/file/jstt/css3/2018-03-20/718b56be9dbf920cc0a6124545216654.jpg" alt="">
-            </div>
-            <div class="right">十条设计原则教会你如何进行网页布局,人家进行两行打点测试</div>
-          </li>
-          <li>
-            <div class="left">
-              <img src="http://www.yangqq.com/d/file/jstt/css3/2018-03-20/718b56be9dbf920cc0a6124545216654.jpg" alt="">
-            </div>
-            <div class="right">十条设计原则教会你如何进行网页布局,人家进行两行打点测试</div>
+          <li v-for="item in articleData" :key="item.id">
+            <router-link :to='"/article/"+item.id'>
+                <div class="left">
+                  <img :src="item.cover" alt="">
+                </div>
+                <div class="right">{{item.title}}</div>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -63,8 +29,28 @@
 <script>
 import pictureWithTitle from "./pictureWithTitle.vue";
 export default {
-  data() {
-    return {};
+  data(){
+    return{
+      articleData:[],
+      specialIntroData : {}
+    }
+  },
+  created(){
+    this.getData();
+  },
+  methods:{
+    getData(){
+      this.$http({
+        'url' : this.$http.adornUrl('/api/specialArticle'),
+        'method' : 'GET',
+        'params' : this.$http.adornParams()
+      }).then(({data})=>{
+        if(data.status == 'success'&& data.statusCode=='200'){
+          this.articleData = data.data.slice(1);
+          this.specialIntroData = data.data[0];
+        }
+      })
+    }
   },
   components: {
     pictureWithTitle
@@ -126,7 +112,7 @@ export default {
           &:hover{
             .left{
               img{
-              width: 110%;
+              // width: 110%;
               height: 110%;
             }
             }
@@ -137,8 +123,9 @@ export default {
             position: absolute;
             left: 0;
             right: 0;
+            overflow: hidden;
             img{
-              width: 100%;
+              // width: 100%;
               height: 100%;
               transition: all .5s ease;
               transition: all 0.5s;

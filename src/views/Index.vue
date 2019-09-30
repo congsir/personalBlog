@@ -36,6 +36,13 @@ export default {
         toTopShow: false,
       }
     },
+  watch: {
+    '$store.state.is_toTop'(){
+      if(this.$store.state.is_toTop == '1'){
+        this.scrollToTop();
+      }
+    }
+  },
     methods: {
       handleScroll() {
         //id scroller-box是自己在组件上添加的，为了方便获取dom
@@ -52,12 +59,13 @@ export default {
         cancelAnimationFrame(timer)
         timer = requestAnimationFrame(function fn() {
           if (_that.scrollTop > 0) {
-            _that.scrollTop -= 50
+            _that.scrollTop -= 100
             document.getElementById("scroller-box").children[0].scrollTop = _that.scrollTop
             timer = requestAnimationFrame(fn)
           } else {
             cancelAnimationFrame(timer)
-            _that.toTopShow = false
+            _that.toTopShow = false;
+            _that.$store.dispatch('de_toTop')
           }
         })
       }
@@ -124,6 +132,11 @@ export default {
       &:hover{
         opacity: .8;
       }
-  }
+    }
+    .clearFix::after{
+      display: block;
+      content:'';
+      clear:both;
+    }
 </style>
 

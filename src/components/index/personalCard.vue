@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="card">
-      <div class="title">我的名片</div>
+      <div class="title" title="个人介绍"><a href="/aboutMe">我的名片</a></div>
       <ul class="msg">
         <li>网名：insper</li>
         <li>职业：前端开发工程师</li>
@@ -11,10 +11,9 @@
       <ul class="linkmore">
         <li>
           <a
-            href="#"
-            target="_blank"
+            href="/aboutMe"
             class=""
-            title="网站地址"
+            title="个人介绍"
           ><i class="el-icon-s-home"></i></a>
         </li>
         <li>
@@ -65,6 +64,10 @@
     color: #89919a;
     font-weight: normal;
     padding-bottom: 10px;
+    a{
+      color: #89919a;
+      font-weight: normal;
+    }
   }
   .msg > li {
     font-size: 12px;
@@ -72,10 +75,6 @@
     line-height: 28px;
     text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
     color: #d0d2d4;
-    -webkit-animation: animations2 5s ease-in-out 5s;
-    -moz-animation: animations2 5s ease-in-out 5s;
-    -o-animation: animations2 5s ease-in-out 5s;
-    -ms-animation: animations2 5s ease-in-out 5s;
     animation: animations2 5s ease-in-out 5s;
   }
   .linkmore {
